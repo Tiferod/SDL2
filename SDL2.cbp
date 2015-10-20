@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="SDL2" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/SDL2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+					<Add directory="../SDL2" />
+				</Compiler>
+				<Linker>
+					<Add library="opengl32" />
+					<Add library="glew32" />
+					<Add library="SDL2_image" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/SDL2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+					<Add directory="../SDL2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="E:/CodeBlocks/MinGW/SDL-2.0/include/SDL2" />
+			<Add directory="E:/CodeBlocks/MinGW/SDL-2.0/include" />
+		</Compiler>
+		<Linker>
+			<Add library="mingw32" />
+			<Add library="SDL2main" />
+			<Add library="SDL2.dll" />
+			<Add directory="E:/CodeBlocks/MinGW/SDL-2.0/lib" />
+		</Linker>
+		<Unit filename="Camera.cpp" />
+		<Unit filename="Camera.h" />
+		<Unit filename="Chunk.cpp" />
+		<Unit filename="Chunk.h" />
+		<Unit filename="Cube.cpp" />
+		<Unit filename="Cube.h" />
+		<Unit filename="Input.cpp" />
+		<Unit filename="Input.h" />
+		<Unit filename="SceneOpenGL.cpp" />
+		<Unit filename="SceneOpenGL.h" />
+		<Unit filename="Shader.cpp" />
+		<Unit filename="Shader.h" />
+		<Unit filename="Texture.cpp" />
+		<Unit filename="Texture.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
