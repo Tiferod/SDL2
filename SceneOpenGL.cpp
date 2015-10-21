@@ -3,7 +3,7 @@
 #include <math.h>
 #include "Chunk.h"
 
-SceneOpenGL::SceneOpenGL(std::string titreFenetre, int largeurFenetre, int hauteurFenetre) : m_titreFenetre(titreFenetre), m_largeurFenetre(largeurFenetre), m_hauteurFenetre(hauteurFenetre), m_fenetre(0), m_contexteOpenGL(0), m_input(), m_dAffichage(50)
+SceneOpenGL::SceneOpenGL(std::string titreFenetre, int largeurFenetre, int hauteurFenetre) : m_titreFenetre(titreFenetre), m_largeurFenetre(largeurFenetre), m_hauteurFenetre(hauteurFenetre), m_fenetre(0), m_contexteOpenGL(0), m_input(), m_dAffichage(10), m_dChunk(25)
 {
     int m = 0;
     for (int i = 0 ; i < 2000 ; i++)
@@ -114,17 +114,16 @@ void SceneOpenGL::bouclePrincipale()
     m_input.afficherPointeur(false);
     m_input.capturerPointeur(true);
 
-    for (int i = -5 ; i < 5 ; i++)
+    for (int i = -m_dAffichage ; i < m_dAffichage ; i++)
         {
-            for (int j = -5 ; j < 5 ; j++)
+            for (int j = -m_dAffichage ; j < m_dAffichage ; j++)
             {
-                if (!m_tableauChunk[i+5][j+5])
+                if (!m_tableauChunk[i+m_dAffichage][j+m_dAffichage])
                 {
-                    Chunk *chunk = new Chunk(i*16+positionX/16, j*16+positionZ/16, "Shaders/texture.vert", "Shaders/texture.frag");
+                    Chunk *chunk = new Chunk((i+positionX/16)*16, (j+positionZ/16)*16, "Shaders/texture.vert", "Shaders/texture.frag");
                     chunk->charger();
-                    m_tableauChunk[i+5][j+5] = chunk;
+                    m_tableauChunk[i+m_dAffichage][j+m_dAffichage] = chunk;
                 }
-                m_tableauChunk[i+5][j+5]->afficher(projection, modelview);
             }
         }
 
@@ -136,10 +135,6 @@ void SceneOpenGL::bouclePrincipale()
     cubeRF.charger();
     Cube cubeRB(1, 1, "Shaders/texture.vert", "Shaders/texture.frag");
     cubeRB.charger();*/
-    /*Chunk chunk1(0, 0, "Shaders/texture.vert", "Shaders/texture.frag");
-    chunk1.charger();
-    Chunk chunk2(0, 16, "Shaders/texture.vert", "Shaders/texture.frag");
-    chunk2.charger();*/
 
     while(!m_input.terminer())
     {
@@ -152,70 +147,72 @@ void SceneOpenGL::bouclePrincipale()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         modelview = lookAt(vec3(0, 5, 0), vec3(0, 5, 5), vec3(0, 1, 0));
         camera.lookAt(modelview);
+
         if (positionX / 16 < int(camera.getPosition().x) / 16)
         {
-            for (int j = -5 ; j < 5 ; j++)
+            for (int j = -m_dAffichage ; j < m_dAffichage ; j++)
             {
-                delete m_tableauChunk[0][j+5];
-                for (int i = -5 ; i < 4 ; i++)
+                delete m_tableauChunk[0][j+m_dAffichage];
+                for (int i = -m_dAffichage ; i < m_dAffichage - 1 ; i++)
                 {
-                    m_tableauChunk[i+5][j+5] = m_tableauChunk[i+6][j+5];
+                    m_tableauChunk[i+m_dAffichage][j+m_dAffichage] = m_tableauChunk[i+1+m_dAffichage][j+m_dAffichage];
                 }
-                Chunk *chunk = new Chunk(5*16+(positionX/16)*16, j*16+(positionZ/16)*16, "Shaders/texture.vert", "Shaders/texture.frag");
+                Chunk *chunk = new Chunk((m_dAffichage+positionX/16)*16, (j+positionZ/16)*16, "Shaders/texture.vert", "Shaders/texture.frag");
                 chunk->charger();
-                m_tableauChunk[9][j+5] = chunk;
+                m_tableauChunk[2*m_dAffichage-1][j+m_dAffichage] = chunk;
             }
         }
         if (positionX / 16 > int(camera.getPosition().x) / 16)
         {
-            for (int j = -5 ; j < 5 ; j++)
+            for (int j = -m_dAffichage ; j < m_dAffichage ; j++)
             {
-                delete m_tableauChunk[9][j+5];
-                for (int i = 4 ; i > -5 ; i--)
+                delete m_tableauChunk[2*m_dAffichage-1][j+m_dAffichage];
+                for (int i = m_dAffichage-1 ; i > -m_dAffichage ; i--)
                 {
-                    m_tableauChunk[i+5][j+5] = m_tableauChunk[i+4][j+5];
+                    m_tableauChunk[i+m_dAffichage][j+m_dAffichage] = m_tableauChunk[i-1+m_dAffichage][j+m_dAffichage];
                 }
-                Chunk *chunk = new Chunk(-5*16+(positionX/16)*16, j*16+(positionZ/16)*16, "Shaders/texture.vert", "Shaders/texture.frag");
+                Chunk *chunk = new Chunk((-m_dAffichage+positionX/16)*16, (j+positionZ/16)*16, "Shaders/texture.vert", "Shaders/texture.frag");
                 chunk->charger();
-                m_tableauChunk[0][j+5] = chunk;
+                m_tableauChunk[0][j+m_dAffichage] = chunk;
             }
         }
         if (positionZ / 16 < int(camera.getPosition().z) / 16)
         {
-            for (int i = -5 ; i < 5 ; i++)
+            for (int i = -m_dAffichage ; i < m_dAffichage ; i++)
             {
-                delete m_tableauChunk[i+5][0];
-                for (int j = -5 ; j < 4 ; j++)
+                delete m_tableauChunk[i+m_dAffichage][0];
+                for (int j = -m_dAffichage ; j < m_dAffichage-1 ; j++)
                 {
-                    m_tableauChunk[i+5][j+5] = m_tableauChunk[i+5][j+6];
+                    m_tableauChunk[i+m_dAffichage][j+m_dAffichage] = m_tableauChunk[i+m_dAffichage][j+1+m_dAffichage];
                 }
-                Chunk *chunk = new Chunk(i*16+(positionX/16)*16, 5*16+(positionZ/16)*16, "Shaders/texture.vert", "Shaders/texture.frag");
+                Chunk *chunk = new Chunk((i+positionX/16)*16, (m_dAffichage+positionZ/16)*16, "Shaders/texture.vert", "Shaders/texture.frag");
                 chunk->charger();
-                m_tableauChunk[i+5][9] = chunk;
+                m_tableauChunk[i+m_dAffichage][2*m_dAffichage-1] = chunk;
             }
         }
         if (positionZ / 16 > int(camera.getPosition().z) / 16)
         {
-            for (int i = -5 ; i < 5 ; i++)
+            for (int i = -m_dAffichage ; i < m_dAffichage ; i++)
             {
-                delete m_tableauChunk[i+5][9];
-                for (int j = 4 ; j > -5 ; j--)
+                delete m_tableauChunk[i+m_dAffichage][2*m_dAffichage-1];
+                for (int j = m_dAffichage-1 ; j > -m_dAffichage ; j--)
                 {
-                    m_tableauChunk[i+5][j+5] = m_tableauChunk[i+5][j+4];
+                    m_tableauChunk[i+m_dAffichage][j+m_dAffichage] = m_tableauChunk[i+m_dAffichage][j-1+m_dAffichage];
                 }
-                Chunk *chunk = new Chunk(i*16+(positionX/16)*16, -5*16+(positionZ/16)*16, "Shaders/texture.vert", "Shaders/texture.frag");
+                Chunk *chunk = new Chunk((i+positionX/16)*16, (-m_dAffichage+positionZ/16)*16, "Shaders/texture.vert", "Shaders/texture.frag");
                 chunk->charger();
-                m_tableauChunk[i+5][0] = chunk;
+                m_tableauChunk[i+m_dAffichage][0] = chunk;
             }
         }
+
         positionX = int(camera.getPosition().x);
         positionZ = int(camera.getPosition().z);
 
-        for (int i = -5 ; i < 5 ; i++)
+        for (int i = -m_dAffichage ; i < m_dAffichage ; i++)
         {
-            for (int j = -5 ; j < 5 ; j++)
+            for (int j = -m_dAffichage ; j < m_dAffichage ; j++)
             {
-                m_tableauChunk[i+5][j+5]->afficher(projection, modelview);
+                m_tableauChunk[i+m_dAffichage][j+m_dAffichage]->afficher(projection, modelview);
             }
         }
 

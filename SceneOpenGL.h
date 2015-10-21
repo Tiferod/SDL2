@@ -45,8 +45,8 @@ class SceneOpenGL
     SDL_GLContext m_contexteOpenGL;
     SDL_Event m_evenements;
     Input m_input;
-    int m_dAffichage;
-    static Chunk *m_tableauChunk[10][10];
+    int m_dAffichage, m_dChunk;
+    static Chunk *m_tableauChunk[50][50];
 };
 
 #endif

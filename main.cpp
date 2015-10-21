@@ -11,7 +11,7 @@
 
 int SceneOpenGL::m_height[2000][2000];
 int SceneOpenGL::m_dHeight[2000][2000];
-Chunk *SceneOpenGL::m_tableauChunk[10][10];
+Chunk *SceneOpenGL::m_tableauChunk[50][50];
 
 int main(int argc, char **argv)
 {

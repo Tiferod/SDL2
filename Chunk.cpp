@@ -9,10 +9,6 @@
 
 using namespace glm;
 
-/*Chunk::Chunk(): Chunk(0, 0, "Shaders/texture.vert", "Shaders/texture.frag")
-{
-    m_loaded = false;
-}*/
 Chunk::Chunk(int pX, int pZ, std::string const vertexShader, std::string const fragmentShader) : m_shader(vertexShader, fragmentShader), m_herbe("TextureHerbe.jpg"), m_terre("TextureTerre.jpg"), m_vboID(0), m_tailleVerticesBytes(46080 * sizeof(float)), m_tailleCoordTexturesBytes(30720 * sizeof(float)), m_vaoID(0), m_nbrCubes(0), m_loaded(true)
 {
     m_herbe.charger();
@@ -147,10 +143,4 @@ void Chunk::charger()
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
-}
-
-bool Chunk::isLoaded()
-{
-    std::cout<<"Bonjour"<<std::endl;
-    return m_loaded;
 }

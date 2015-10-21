@@ -20,12 +20,10 @@ class Chunk
 {
     public:
 
-    //Chunk();
     Chunk(int pX, int pY, std::string const vertexShader, std::string const fragmentShader);
     ~Chunk();
     void afficher(glm::mat4 &projection, glm::mat4 &modelview);
     void charger();
-    bool isLoaded();
 
     private:
 
